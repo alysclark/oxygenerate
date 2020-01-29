@@ -1,0 +1,6 @@
+pydicom
+numpy
+nose
+scipy
+scikit-image
+coverage
