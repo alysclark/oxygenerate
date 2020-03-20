@@ -162,7 +162,6 @@ def vtk_to_numpy(imagevtk):
 
 def sitk_to_numpy(imagesitk):
     img_array = sitk.GetArrayFromImage(imagesitk)# this indexes [k,j,i] for 3d images so need to restack
-    print(img_array.ndim)
     if(img_array.ndim > 2): #3D need to restack
         img_temp = np.zeros((img_array.shape[2], img_array.shape[1], img_array.shape[0]))
         for i in range(0, img_array.shape[0]):
@@ -174,7 +173,6 @@ def sitk_to_numpy(imagesitk):
 
 def read_nifti_sitk(path):
     img = sitk.ReadImage(path)
-    print(img)
     return img
 
 def read_nifti_vitk(path):
