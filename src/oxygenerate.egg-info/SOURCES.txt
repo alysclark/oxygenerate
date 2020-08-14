@@ -5,6 +5,7 @@ src/oxygenerate/imports_and_exports.py
 src/oxygenerate/lungsegment.py
 src/oxygenerate/utilities.py
 src/oxygenerate/vesselsegment.py
+src/oxygenerate/visualise.py
 src/oxygenerate.egg-info/PKG-INFO
 src/oxygenerate.egg-info/SOURCES.txt
 src/oxygenerate.egg-info/dependency_links.txt

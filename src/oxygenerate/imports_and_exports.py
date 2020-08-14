@@ -160,15 +160,26 @@ def vtk_to_numpy(imagevtk):
     return dicom_array
 
 
-def sitk_to_numpy(imagesitk):
-    img_array = sitk.GetArrayFromImage(imagesitk)# this indexes [k,j,i] for 3d images so need to restack
-    if(img_array.ndim > 2): #3D need to restack
-        img_temp = np.zeros((img_array.shape[2], img_array.shape[1], img_array.shape[0]))
+def sitk_to_numpy(imagesitk,info,axis=1):
+    if(len(info['pix_dim'])<=3):
+        img_array = sitk.GetArrayFromImage(imagesitk)# this indexes [k,j,i] for 3d images so need to restack
+        if(img_array.ndim > 2): #3D need to restack
+            img_temp = np.zeros((img_array.shape[2], img_array.shape[1], img_array.shape[0]))
+            for i in range(0, img_array.shape[0]):
+                for j in range(0, img_array.shape[1]):
+                    for k in range(0, img_array.shape[2]):
+                        img_temp[k, j, i] = img_array[i, j, k]
+            img_array = img_temp
+    else:
+        img_array = sitk.GetArrayFromImage(imagesitk)# this indexes [k,j,i] for 3d images so need to restack
+        img_temp = np.zeros((img_array.shape[3],img_array.shape[2], img_array.shape[1], img_array.shape[0]))
         for i in range(0, img_array.shape[0]):
             for j in range(0, img_array.shape[1]):
                 for k in range(0, img_array.shape[2]):
-                    img_temp[k, j, i] = img_array[i, j, k]
+                    for l in range(0,img_array.shape[3]):
+                        img_temp[l, k, j, i] = img_array[i, j, k, l]
         img_array = img_temp
+
     return img_array
 
 def read_nifti_sitk(path):
