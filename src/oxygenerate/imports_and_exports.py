@@ -2,6 +2,7 @@ import vtk
 from vtk.util import numpy_support
 import SimpleITK as sitk
 import numpy as np
+from stl import mesh
 
 """
 .. module:: imports_and_exports
@@ -101,6 +102,12 @@ def load_dicom_sitk(path):
 
     return imagesitk
 
+
+def load_stl(path):
+    your_mesh = mesh.Mesh.from_file(path)
+    print(your_mesh)
+
+    return your_mesh
 
 def extract_dicom_metadata_sitk(imagesitk):
     pixel_dimension = imagesitk.GetSize()
