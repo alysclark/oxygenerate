@@ -4,3 +4,4 @@ nose
 scipy
 scikit-image
 coverage
+SimpleITK
