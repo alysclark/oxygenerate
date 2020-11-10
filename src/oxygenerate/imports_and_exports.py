@@ -3,6 +3,8 @@ from vtk.util import numpy_support
 import SimpleITK as sitk
 import numpy as np
 from stl import mesh
+from PIL import Image
+import os
 
 """
 .. module:: imports_and_exports
@@ -80,6 +82,25 @@ def writeipNodeFile(filename, coords):
             f.write(' The Xj(3) coordinate is [ 0.00000E+00]:  %s\n\n' % (coords[i][2]))
 
 
+def load_images_from_folder(path):
+    img_array = []
+    for filename in os.listdir(path):
+        img = Image.open(os.path.join(path,filename))
+        img = np.array(img)
+        if img is not None:
+            img_array.append(img)
+
+    img_array = np.asarray(img_array)        # this indexes [k,j,i] for 3d images so need to restack
+
+    img_temp = np.zeros((np.shape(img_array)[2],np.shape(img_array)[1],np.shape(img_array)[0]))
+    for i in range(0, np.shape(img_array)[0]):
+        for j in range(0, np.shape(img_array)[1]):
+            for k in range(0, np.shape(img_array)[2]):
+                img_temp[k, j, i] = img_array[i, j, k]
+    img_array = img_temp
+    return img_array
+
+
 def load_dicom_vtk(path):
     #Load all the images in the DICOM directory
     imagevtk = vtk.vtkDICOMImageReader()
@@ -103,6 +124,10 @@ def load_dicom_sitk(path):
     return imagesitk
 
 
+
+
+
+
 def load_stl(path):
     your_mesh = mesh.Mesh.from_file(path)
     print(your_mesh)
@@ -121,8 +146,6 @@ def extract_dicom_metadata_sitk(imagesitk):
     print('Image orientation: ', image_orientation)
 
     return {'pix_dim':pixel_dimension, 'pix_space':pixel_spacing, 'im_pos': image_position, 'im_orient': image_orientation }
-
-
 
 
 
