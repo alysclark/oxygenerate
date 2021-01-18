@@ -1,7 +1,6 @@
 import oxygenerate as oxy
 import matplotlib.pyplot as plt          # needed for viewing the images
 import numpy as np
-import SimpleITK as sitk
 
 def image_show(nda, figurenum=1,  title=None, margin=0.05, dpi=40):
     #spacing = nda.GetSpacing()
@@ -23,7 +22,7 @@ sitk_ct_images = oxy.load_dicom_sitk('../sample_inputs/CTPA')
 sitk_ct_info = oxy.extract_dicom_metadata_sitk(sitk_ct_images)
 
 numpy_images_from_vtk = oxy.vtk_to_numpy(vtk_ct_images)
-numpy_images_from_itk = oxy.sitk_to_numpy(sitk_ct_images)
+numpy_images_from_itk = oxy.sitk_to_numpy(sitk_ct_images,sitk_ct_info)
 
 #print(np.size(numpy_images))
 plt.figure()
